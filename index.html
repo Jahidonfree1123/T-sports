@@ -1,28 +1,121 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live T-Sports</title>
-    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
-    <style>
-        body { margin: 0; background: #000; height: 100vh; display: flex; align-items: center; }
-        .video-js { width: 100% !important; height: auto; aspect-ratio: 16/9; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live Player</title>
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+<style>
+body{
+  margin:0;
+  background:#000;
+  font-family:sans-serif;
+}
+
+.player-container{
+  position:relative;
+  width:100%;
+  max-width:100%;
+  height:100vh;
+  background:#000;
+}
+
+video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  background:#000;
+}
+
+.top-bar{
+  position:absolute;
+  top:10px;
+  left:10px;
+  right:10px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  z-index:10;
+}
+
+.network{
+  background:rgba(0,0,0,0.6);
+  padding:6px 10px;
+  border-radius:20px;
+  font-size:13px;
+}
+
+.share-btn{
+  background:#ff004f;
+  border:none;
+  color:#fff;
+  padding:8px 14px;
+  border-radius:20px;
+  font-size:13px;
+  cursor:pointer;
+}
+</style>
 </head>
+
 <body>
 
-    <video id="player" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto">
-        <source src="http://103.151.60.204/T-Sports/tracks-v1a1/mono.m3u8" type="application/x-mpegURL">
-    </video>
+<div class="player-container">
+  
+  <div class="top-bar">
+    <div class="network" id="speed">Checking...</div>
+    <button class="share-btn" onclick="shareStream()">Share</button>
+  </div>
 
-    <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
-    <script>
-        var player = videojs('player', {
-            autoplay: false,
-            fluid: true
+  <video id="video" controls autoplay muted playsinline></video>
+
+</div>
+
+<script>
+
+var video = document.getElementById('video');
+var videoSrc = "https://amitomar.hoichoi.pro/bdixbd.net/index.fmp4.m3u8";
+
+if(Hls.isSupported()){
+    var hls = new Hls({
+        maxBufferLength: 30,
+    });
+    hls.loadSource(videoSrc);
+    hls.attachMedia(video);
+} 
+else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    video.src = videoSrc;
+}
+
+video.muted = false;
+
+// Share Button
+function shareStream(){
+    if(navigator.share){
+        navigator.share({
+            title: 'Live Stream',
+            text: 'Watch this Live Stream',
+            url: window.location.href
         });
-    </script>
+    } else {
+        alert("Sharing not supported in this browser");
+    }
+}
+
+// Network Speed Monitor
+setInterval(function(){
+    if(navigator.connection){
+        var speed = navigator.connection.downlink;
+        document.getElementById("speed").innerHTML = 
+        "Speed: " + speed + " Mbps";
+    } else {
+        document.getElementById("speed").innerHTML = 
+        "Network Active";
+    }
+},1000);
+
+</script>
 
 </body>
 </html>
