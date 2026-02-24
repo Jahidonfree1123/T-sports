@@ -1,10 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Live Player</title>
-
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
 <style>
@@ -14,11 +11,11 @@ body{
   font-family:sans-serif;
 }
 
-.player-container{
+.player-wrapper{
   position:relative;
   width:100%;
   max-width:100%;
-  height:100vh;
+  aspect-ratio:16/9;
   background:#000;
 }
 
@@ -26,34 +23,33 @@ video{
   width:100%;
   height:100%;
   object-fit:cover;
-  background:#000;
 }
 
 .top-bar{
   position:absolute;
-  top:10px;
-  left:10px;
-  right:10px;
+  top:8px;
+  left:8px;
+  right:8px;
   display:flex;
   justify-content:space-between;
-  align-items:center;
-  z-index:10;
+  z-index:5;
 }
 
 .network{
   background:rgba(0,0,0,0.6);
-  padding:6px 10px;
-  border-radius:20px;
-  font-size:13px;
+  padding:4px 10px;
+  border-radius:15px;
+  font-size:12px;
+  color:#fff;
 }
 
 .share-btn{
   background:#ff004f;
   border:none;
   color:#fff;
-  padding:8px 14px;
-  border-radius:20px;
-  font-size:13px;
+  padding:5px 12px;
+  border-radius:15px;
+  font-size:12px;
   cursor:pointer;
 }
 </style>
@@ -61,7 +57,7 @@ video{
 
 <body>
 
-<div class="player-container">
+<div class="player-wrapper">
   
   <div class="top-bar">
     <div class="network" id="speed">Checking...</div>
@@ -78,41 +74,35 @@ var video = document.getElementById('video');
 var videoSrc = "https://amitomar.hoichoi.pro/bdixbd.net/index.fmp4.m3u8";
 
 if(Hls.isSupported()){
-    var hls = new Hls({
-        maxBufferLength: 30,
-    });
+    var hls = new Hls();
     hls.loadSource(videoSrc);
     hls.attachMedia(video);
-} 
-else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+}
+else if(video.canPlayType('application/vnd.apple.mpegurl')){
     video.src = videoSrc;
 }
 
+// Sound On করার চেষ্টা
 video.muted = false;
 
-// Share Button
+// Share
 function shareStream(){
-    if(navigator.share){
-        navigator.share({
-            title: 'Live Stream',
-            text: 'Watch this Live Stream',
-            url: window.location.href
-        });
-    } else {
-        alert("Sharing not supported in this browser");
-    }
+  if(navigator.share){
+    navigator.share({
+      title:"Live Stream",
+      url:window.location.href
+    });
+  } else {
+    alert("Sharing not supported");
+  }
 }
 
-// Network Speed Monitor
+// Network Speed
 setInterval(function(){
-    if(navigator.connection){
-        var speed = navigator.connection.downlink;
-        document.getElementById("speed").innerHTML = 
-        "Speed: " + speed + " Mbps";
-    } else {
-        document.getElementById("speed").innerHTML = 
-        "Network Active";
-    }
+  if(navigator.connection){
+    document.getElementById("speed").innerHTML =
+    "Speed: " + navigator.connection.downlink + " Mbps";
+  }
 },1000);
 
 </script>
