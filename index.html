@@ -8,64 +8,27 @@
 body{
   margin:0;
   background:#000;
-  font-family:sans-serif;
 }
 
-.player-wrapper{
-  position:relative;
+.player{
   width:100%;
   max-width:100%;
-  aspect-ratio:16/9;
+  aspect-ratio:16/9;   /* TV size */
   background:#000;
 }
 
 video{
   width:100%;
   height:100%;
-  object-fit:cover;
-}
-
-.top-bar{
-  position:absolute;
-  top:8px;
-  left:8px;
-  right:8px;
-  display:flex;
-  justify-content:space-between;
-  z-index:5;
-}
-
-.network{
-  background:rgba(0,0,0,0.6);
-  padding:4px 10px;
-  border-radius:15px;
-  font-size:12px;
-  color:#fff;
-}
-
-.share-btn{
-  background:#ff004f;
-  border:none;
-  color:#fff;
-  padding:5px 12px;
-  border-radius:15px;
-  font-size:12px;
-  cursor:pointer;
+  background:#000;
 }
 </style>
 </head>
 
 <body>
 
-<div class="player-wrapper">
-  
-  <div class="top-bar">
-    <div class="network" id="speed">Checking...</div>
-    <button class="share-btn" onclick="shareStream()">Share</button>
-  </div>
-
-  <video id="video" controls autoplay muted playsinline></video>
-
+<div class="player">
+  <video id="video" controls autoplay playsinline></video>
 </div>
 
 <script>
@@ -73,37 +36,14 @@ video{
 var video = document.getElementById('video');
 var videoSrc = "https://amitomar.hoichoi.pro/bdixbd.net/index.fmp4.m3u8";
 
-if(Hls.isSupported()){
+if (Hls.isSupported()) {
     var hls = new Hls();
     hls.loadSource(videoSrc);
     hls.attachMedia(video);
-}
-else if(video.canPlayType('application/vnd.apple.mpegurl')){
+} 
+else if (video.canPlayType('application/vnd.apple.mpegurl')) {
     video.src = videoSrc;
 }
-
-// Sound On করার চেষ্টা
-video.muted = false;
-
-// Share
-function shareStream(){
-  if(navigator.share){
-    navigator.share({
-      title:"Live Stream",
-      url:window.location.href
-    });
-  } else {
-    alert("Sharing not supported");
-  }
-}
-
-// Network Speed
-setInterval(function(){
-  if(navigator.connection){
-    document.getElementById("speed").innerHTML =
-    "Speed: " + navigator.connection.downlink + " Mbps";
-  }
-},1000);
 
 </script>
 
