@@ -1,9 +1,75 @@
 <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
+<link href="https://unpkg.com/@videojs/themes@1.0.1/dist/city/index.css" rel="stylesheet">
 
-<div style="width: 100%; max-width: 640px; margin: 0 auto;">
-  <video id="my-video" class="video-js vjs-default-skin vjs-16-9" controls preload="auto" width="100%" data-setup='{}'>
+<style>
+  /* ইউটিউব স্টাইল সাইজ এবং ডিজাইন */
+  .video-container {
+    width: 100%;
+    max-width: 854px; /* YouTube Large Player Size */
+    margin: 20px auto;
+    background-color: #000;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  /* কাস্টম লোডিং এনিমেশন */
+  .vjs-loading-spinner {
+    border: 5px solid rgba(255, 255, 255, 0.2) !important;
+    border-top: 5px solid #ff0000 !important; /* YouTube Red Color */
+    border-radius: 50% !important;
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  /* প্লেয়ারের কন্ট্রোল বার কাস্টমাইজেশন */
+  .video-js .vjs-control-bar {
+    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+  }
+  
+  .vjs-big-play-button {
+    line-height: 2.6em !important;
+    height: 2.6em !important;
+    width: 2.6em !important;
+    border-radius: 50% !important;
+    background-color: rgba(255, 0, 0, 0.8) !important; /* Red play button */
+    border: none !important;
+    top: 50% !important;
+    left: 50% !important;
+    margin-top: -1.3em !important;
+    margin-left: -1.3em !important;
+  }
+</style>
+
+<div class="video-container">
+  <video
+    id="star-sports-player"
+    class="video-js vjs-theme-city vjs-16-9 vjs-big-play-centered"
+    controls
+    preload="auto"
+    width="100%"
+    data-setup='{ "fluid": true }'>
+    
     <source src="https://edge2.roarzone.info:8447/roarzone/edge2/star-sports-1/index.m3u8?token=19d60a66bbfd53405018e37a6d33700172884ce1-6f750abeed522a0bf8a490222f4b52ec-1772028079-1772024479" type="application/x-mpegURL">
+    
+    <p class="vjs-no-js">
+      আপনার ব্রাউজারে জাভাস্ক্রিপ্ট বন্ধ আছে। দয়া করে জাভাস্ক্রিপ্ট চালু করুন।
+    </p>
   </video>
 </div>
 
 <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
+
+<script>
+  // প্লেয়ার সেটআপ
+  var player = videojs('star-sports-player', {
+    playbackRates: [0.5, 1, 1.5, 2],
+    userActions: {
+      hotkeys: true // কিবোর্ড শর্টকাট (Space for play/pause, F for fullscreen)
+    }
+  });
+
+  // অটো-প্লে করার চেষ্টা (অনেক ব্রাউজার মিউট ছাড়া অটো-প্লে ব্লক করে)
+  // player.muted(true); 
+  // player.play();
+</script>
