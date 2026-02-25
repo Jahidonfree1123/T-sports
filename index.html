@@ -3,32 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Stream</title>
+    <title>Live Stream Fix</title>
     <meta name="referrer" content="no-referrer">
-    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/8.10.0/video-js.min.css" rel="stylesheet" />
     <style>
-        body { background: #000; margin: 0; display: flex; align-items: center; justify-content: center; height: 100vh; }
+        body { background: #000; margin: 0; display: flex; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
         .video-container { width: 100%; max-width: 854px; position: relative; }
-        .dot-loader { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: flex; align-items: center; justify-content: center; z-index: 10; }
-        .dot-loader div { width: 15px; height: 15px; margin: 0 5px; background: #f00; border-radius: 50%; animation: pulse 1.4s infinite ease-in-out both; }
+        
+        /* ডট লোডার - এটিকে ক্লিক-প্রুফ করা হয়েছে */
+        .dot-loader { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.8); display: flex; align-items: center; 
+            justify-content: center; z-index: 1; pointer-events: none; /* এটি ক্লিক আটকাবে না */
+        }
+        .dot-loader div { width: 18px; height: 18px; margin: 0 6px; background: #ff0000; border-radius: 50%; animation: pulse 1.4s infinite ease-in-out both; }
         .dot-loader .dot1 { animation-delay: -0.32s; }
         .dot-loader .dot2 { animation-delay: -0.16s; }
         @keyframes pulse { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1.0); } }
+
+        /* প্লে বাটনকে সবার ওপরে রাখা হয়েছে */
+        .vjs-big-play-button { 
+            z-index: 100 !important; 
+            background-color: #ff0000 !important; 
+            border: none !important; 
+            border-radius: 50% !important; 
+            cursor: pointer !important;
+        }
     </style>
 </head>
 <body>
+
 <div class="video-container">
-    <div id="loader" class="dot-loader"><div class="dot1"></div><div class="dot2"></div><div class="dot3"></div></div>
-    <video id="player" class="video-js vjs-16-9 vjs-big-play-centered" controls preload="auto" width="100%"></video>
+    <div id="loader" class="dot-loader">
+        <div class="dot1"></div><div class="dot2"></div><div class="dot3"></div>
+    </div>
+    <video id="final-player" class="video-js vjs-16-9 vjs-big-play-centered" controls preload="auto" width="100%"></video>
 </div>
-<script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/8.10.0/video.min.js"></script>
+
 <script>
-    const githubLink = "https://raw.githubusercontent.com/Jahidonfree1123/link.json/main/link.json";
-    var player = videojs('player');
-    fetch(githubLink + '?t=' + Date.now()).then(r => r.json()).then(d => {
-        player.src({ src: d.m3u8_url, type: 'application/x-mpegURL' });
-        player.on('playing', () => document.getElementById('loader').style.display='none');
-    }).catch(e => { document.getElementById('loader').style.display='none'; });
+    const githubRawUrl = "https://raw.githubusercontent.com/Jahidonfree1123/link.json/main/link.json";
+    var player = videojs('final-player');
+    var loader = document.getElementById('loader');
+
+    async function loadVideo() {
+        try {
+            const res = await fetch(githubRawUrl + '?t=' + Date.now());
+            const data = await res.json();
+            player.src({ src: data.m3u8_url, type: 'application/x-mpegURL' });
+            
+            // ভিডিও চলতে শুরু করলে ডটগুলো গায়েব হবে
+            player.on('playing', () => { loader.style.display = 'none'; });
+            player.on('canplay', () => { loader.style.display = 'none'; });
+        } catch (e) {
+            // এরর হলে ৫ সেকেন্ড পর ডট সরিয়ে দেওয়া হবে যেন ক্লিক করা যায়
+            setTimeout(() => { loader.style.display = 'none'; }, 5000);
+        }
+    }
+
+    loadVideo();
 </script>
 </body>
 </html>
