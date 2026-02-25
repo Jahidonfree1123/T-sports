@@ -1,3 +1,34 @@
-{
-  "m3u8_url": "https://edge2.roarzone.info:8447/roarzone/edge2/star-sports-1/index.m3u8?token=f3e4f38e544758445b2f012a6257a9fe264b0fe6-2fac89ad6623a9ea6a6f7697201454b4-1772034409-1772030809"
-}
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Stream</title>
+    <meta name="referrer" content="no-referrer">
+    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+    <style>
+        body { background: #000; margin: 0; display: flex; align-items: center; justify-content: center; height: 100vh; }
+        .video-container { width: 100%; max-width: 854px; position: relative; }
+        .dot-loader { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: flex; align-items: center; justify-content: center; z-index: 10; }
+        .dot-loader div { width: 15px; height: 15px; margin: 0 5px; background: #f00; border-radius: 50%; animation: pulse 1.4s infinite ease-in-out both; }
+        .dot-loader .dot1 { animation-delay: -0.32s; }
+        .dot-loader .dot2 { animation-delay: -0.16s; }
+        @keyframes pulse { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1.0); } }
+    </style>
+</head>
+<body>
+<div class="video-container">
+    <div id="loader" class="dot-loader"><div class="dot1"></div><div class="dot2"></div><div class="dot3"></div></div>
+    <video id="player" class="video-js vjs-16-9 vjs-big-play-centered" controls preload="auto" width="100%"></video>
+</div>
+<script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+<script>
+    const githubLink = "https://raw.githubusercontent.com/Jahidonfree1123/link.json/main/link.json";
+    var player = videojs('player');
+    fetch(githubLink + '?t=' + Date.now()).then(r => r.json()).then(d => {
+        player.src({ src: d.m3u8_url, type: 'application/x-mpegURL' });
+        player.on('playing', () => document.getElementById('loader').style.display='none');
+    }).catch(e => { document.getElementById('loader').style.display='none'; });
+</script>
+</body>
+</html>
