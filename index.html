@@ -1,56 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
 
-<style>
-body{
-  margin:0;
-  background:#000;
-}
-
-.player{
-  width:100%;
-  max-width:100%;
-  aspect-ratio:16/9;
-  background:#000;
-  position:relative;
-}
-
-video{
-  width:100%;
-  height:100%;
-  background:#000;
-}
-</style>
-</head>
-
-<body>
-
-<div class="player">
-  <video id="video" controls autoplay playsinline></video>
+<div style="width: 100%; max-width: 640px; margin: 0 auto;">
+  <video id="my-video" class="video-js vjs-default-skin vjs-16-9" controls preload="auto" width="100%" data-setup='{}'>
+    <source src="https://edge2.roarzone.info:8447/roarzone/edge2/star-sports-1/index.m3u8?token=19d60a66bbfd53405018e37a6d33700172884ce1-6f750abeed522a0bf8a490222f4b52ec-1772028079-1772024479" type="application/x-mpegURL">
+  </video>
 </div>
 
-<script>
-
-var video = document.getElementById('video');
-
-var videoSrc = "https://edge2.roarzone.info:8447/roarzone/edge2/star-sports-1/index.m3u8?token=19d60a66bbfd53405018e37a6d33700172884ce1-6f750abeed522a0bf8a490222f4b52ec-1772028079-1772024479";
-
-if (Hls.isSupported()) {
-    var hls = new Hls({
-        maxBufferLength: 30,
-        maxMaxBufferLength: 60
-    });
-    hls.loadSource(videoSrc);
-    hls.attachMedia(video);
-} 
-else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-    video.src = videoSrc;
-}
-
-</script>
-
-</body>
-</html>
+<script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
