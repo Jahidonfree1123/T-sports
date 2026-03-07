@@ -3,103 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Joy's Special Day</title>
+    <title>Happy Birthday Joy</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background: #000;
+            background: #050505;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: #fff;
-            font-family: 'Arial', sans-serif;
             overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+            color: white;
         }
 
-        /* অ্যানালগ ঘড়ির মেইন ফ্রেম */
+        /* ঘড়ি ডিজাইন */
         .clock {
-            width: 300px;
-            height: 300px;
-            border: 10px solid #ff007c;
+            width: 350px;
+            height: 350px;
+            border: 10px solid #fff;
             border-radius: 50%;
             position: relative;
-            box-shadow: 0 0 30px #ff007c, inset 0 0 30px #ff007c;
-            background: #050505;
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.2), inset 0 0 50px rgba(255, 255, 255, 0.2);
         }
 
-        /* ঘড়ির সেন্টার পয়েন্ট */
         .clock::after {
             content: '';
             position: absolute;
             width: 15px; height: 15px;
-            background: #fff;
+            background: #ff007c;
             border-radius: 50%;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             z-index: 10;
         }
 
-        /* কাঁটাগুলোর ডিজাইন */
         .hand {
             position: absolute;
             bottom: 50%;
             left: 50%;
-            transform-origin: bottom center; /* এখানেই আসল খেলা */
+            transform-origin: bottom center;
             border-radius: 10px;
-            transform: translateX(-50%);
         }
 
-        .hour { width: 8px; height: 70px; background: #fff; z-index: 3; }
-        .min { width: 5px; height: 100px; background: #00d4ff; z-index: 4; }
-        .sec { width: 2px; height: 120px; background: #ff007c; z-index: 5; }
+        .hour { width: 8px; height: 80px; background: #fff; z-index: 3; }
+        .min { width: 5px; height: 110px; background: #00d4ff; z-index: 4; }
+        .sec { width: 2px; height: 130px; background: #ff007c; z-index: 5; }
 
-        /* ঘড়ির নাম্বারগুলো */
         .clock span {
             position: absolute;
-            inset: 15px;
+            inset: 20px;
             text-align: center;
             transform: rotate(calc(30deg * var(--i)));
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
         }
-        .clock span b {
-            display: inline-block;
-            transform: rotate(calc(-30deg * var(--i)));
-        }
+        .clock span b { display: inline-block; transform: rotate(calc(-30deg * var(--i))); }
 
-        /* বার্থডে সেকশন */
-        #wish-box {
+        /* গিফট বক্স ডিজাইন */
+        #gift-container {
             display: none;
             text-align: center;
-            animation: zoomIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: popIn 1s ease-out;
         }
 
-        .joy-name {
-            font-size: 5rem;
-            color: #ff007c;
-            text-shadow: 0 0 20px #ff007c, 0 0 40px #ff007c;
-            margin: 10px 0;
+        .gift-box {
+            width: 150px;
+            height: 150px;
+            background: #ff007c;
+            position: relative;
+            margin: 0 auto 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
         }
 
-        @keyframes zoomIn {
-            0% { transform: scale(0); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
+        .gift-box::before {
+            content: '';
+            position: absolute;
+            width: 20px; height: 100%;
+            background: #fff;
+            left: 50%; transform: translateX(-50%);
         }
 
-        .dev-text {
+        .gift-box::after {
+            content: '';
+            position: absolute;
+            height: 20px; width: 100%;
+            background: #fff;
+            top: 50%; transform: translateY(-50%);
+        }
+
+        .lid {
+            position: absolute;
+            width: 170px; height: 40px;
+            background: #ff007c;
+            top: -20px; left: -10px;
+            border: 2px solid #fff;
+            z-index: 2;
+        }
+
+        .message {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #00d4ff;
+            text-shadow: 0 0 15px #00d4ff;
+            animation: glow 1.5s infinite alternate;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes glow {
+            from { opacity: 0.7; }
+            to { opacity: 1; text-shadow: 0 0 30px #00d4ff; }
+        }
+
+        .developer {
             position: fixed;
-            bottom: 20px;
-            color: #444;
-            letter-spacing: 4px;
-            font-size: 0.8rem;
+            bottom: 15px;
+            font-size: 0.7rem;
+            color: #333;
+            letter-spacing: 3px;
         }
     </style>
 </head>
 <body>
 
-    <div id="clock-container" style="text-align: center;">
-        <h2 style="margin-bottom: 20px; color: #00d4ff; letter-spacing: 2px;">WAITING FOR 12:00 AM</h2>
+    <div id="clock-section">
         <div class="clock">
             <div id="hr" class="hand hour"></div>
             <div id="mn" class="hand min"></div>
@@ -120,37 +151,42 @@
         </div>
     </div>
 
-    <div id="wish-box">
-        <h3 style="letter-spacing: 5px;">HAPPY BIRTHDAY</h3>
-        <h1 class="joy-name">JOY</h1>
-        <p style="color: #00d4ff;">You are special, Joy! Have a blast! 🎂</p>
+    <div id="gift-container">
+        <div class="gift-box">
+            <div class="lid"></div>
+        </div>
+        <h2 style="margin-bottom: 10px;">HAPPY BIRTHDAY JOY!</h2>
+        <div class="message">তোমার বিকাশ নাম্বার দাও ❤️‍🩹❤️‍🩹</div>
     </div>
 
-    <div class="dev-text">DEVELOPER: YoUR_Nafu</div>
+    <div class="developer">DEVELOPER: YoUR_Nafu</div>
 
     <script>
         const hr = document.querySelector("#hr");
         const mn = document.querySelector("#mn");
         const sc = document.querySelector("#sc");
 
-        setInterval(() => {
-            let day = new Date();
-            let hh = day.getHours() * 30;
-            let mm = day.getMinutes() * 6;
-            let ss = day.getSeconds() * 6;
+        function updateClock() {
+            let now = new Date();
+            let h = now.getHours();
+            let m = now.getMinutes();
+            let s = now.getSeconds();
 
-            // কাঁটা ঘোরানোর ম্যাজিক
-            hr.style.transform = `translateX(-50%) rotateZ(${hh + (mm / 12)}deg)`;
-            mn.style.transform = `translateX(-50%) rotateZ(${mm}deg)`;
-            sc.style.transform = `translateX(-50%) rotateZ(${ss}deg)`;
+            // কাঁটা ঘুরবে
+            hr.style.transform = `translateX(-50%) rotateZ(${(h * 30) + (m / 2)}deg)`;
+            mn.style.transform = `translateX(-50%) rotateZ(${m * 6}deg)`;
+            sc.style.transform = `translateX(-50%) rotateZ(${s * 6}deg)`;
 
-            // রাত ১২টা চেক (00:00:00)
-            if (day.getHours() === 0 && day.getMinutes() === 0 && day.getSeconds() === 0) {
-                document.getElementById('clock-container').style.display = 'none';
-                document.getElementById('wish-box').style.display = 'block';
-                document.body.style.background = "radial-gradient(circle, #222, #000)";
+            // রাত ১২টা চেক
+            if (h === 0 && m === 0 && s === 0) {
+                document.getElementById('clock-section').style.display = 'none';
+                document.getElementById('gift-container').style.display = 'block';
+                document.body.style.background = "#000";
             }
-        }, 1000);
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
     </script>
 </body>
 </html>
