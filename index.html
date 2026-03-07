@@ -16,6 +16,7 @@
             font-family: 'Hind Siliguri', sans-serif;
             color: white;
             overflow: hidden;
+            user-select: none;
         }
 
         /* গিফট বক্স স্ক্রিন */
@@ -29,17 +30,18 @@
             height: 100vh;
             position: absolute;
             z-index: 999;
+            background: #000;
         }
 
         .gift-icon {
-            font-size: 120px;
+            font-size: 110px;
             animation: giftBounce 1.5s infinite ease-in-out;
             filter: drop-shadow(0 0 20px #ff007c);
         }
 
         @keyframes giftBounce {
             0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-30px) scale(1.1); }
+            50% { transform: translateY(-25px) scale(1.1); }
         }
 
         /* ঘড়ি সেকশন */
@@ -77,23 +79,28 @@
             width: 95%;
             max-width: 600px;
             padding: 20px;
-            margin-top: 50px;
-            margin-bottom: 50px;
+            margin-top: 40px;
+            margin-bottom: 40px;
         }
 
         .letter-card {
             background: rgba(20, 20, 20, 0.95);
-            padding: 35px 25px;
+            padding: 40px 25px;
             border-radius: 25px;
             border: 1px solid #ff007c;
             line-height: 1.8;
             font-size: 1.15rem;
             text-align: center;
             box-shadow: 0 0 50px rgba(255, 0, 124, 0.2);
+            animation: fadeIn 2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .highlight { color: #ff007c; font-weight: bold; font-size: 1.6rem; display: block; margin: 15px 0; }
-        .bikas { color: #00d4ff; font-weight: bold; font-size: 1.4rem; border-top: 1px dashed #333; padding-top: 20px; margin-top: 20px; display: block; }
 
         .dev {
             position: fixed; bottom: 10px; width: 100%;
@@ -105,11 +112,11 @@
 
     <div id="start-screen">
         <div class="gift-icon">🎁</div>
-        <p style="margin-top: 15px; color: #555; letter-spacing: 2px;">TAP TO OPEN SURPRISE</p>
+        <p style="margin-top: 15px; color: #555; letter-spacing: 2px; font-size: 0.9rem;">TAP TO OPEN</p>
     </div>
 
     <div id="clock-section">
-        <h2 style="color: #00d4ff; margin-bottom: 20px; letter-spacing: 3px;">TIME IS CHANGING...</h2>
+        <h2 style="color: #00d4ff; margin-bottom: 20px; letter-spacing: 3px; font-weight: 300;">TIME TRAVELING...</h2>
         <div class="clock">
             <div id="hr" class="hand hour"></div>
             <div id="mn" class="hand min"></div>
@@ -127,5 +134,45 @@
             দোয়া রইলো,ভালো থাক,ভালো থাকবিও,,ইনশাআল্লাহ.... আমাকে সহ্য করার ধর্য্য আল্লাহ যেনো তোকে আরো বাড়িয়ে দেয়☺️🫠💝<br>
             নিজের স্বপ্নটাকে সত্যি করে, আমাকে দেখানো স্বপ্নগুলোও যেনো সত্যি করতে পারিস,,,,,বেশি বেশি দোয়া রইলো✨🤲।।।<br><br>
             <span class="highlight" style="color:#00d4ff;">*শুভ জন্মদিন*🕊️💥</span>
-            <span class="bikas">তোমার বিকাশ নাম্বার দাও ❤️‍🩹❤️‍🩹</span>
+        </div>
+    </div>
+
+    <div class="dev">DEVELOPER: YoUR_Nafu</div>
+
+    <script>
+        const startScreen = document.getElementById('start-screen');
+        
+        // স্ক্রিনের যেকোনো জায়গায় ক্লিক করলে কাজ করবে
+        startScreen.addEventListener('click', function() {
+            // ১. গিফট সরাও
+            this.style.display = 'none';
             
+            // ২. ঘড়ি দেখাও
+            const clockSec = document.getElementById('clock-section');
+            clockSec.style.display = 'block';
+            setTimeout(() => { clockSec.style.opacity = '1'; }, 50);
+
+            // ৩. কাঁটা ঘোরানো
+            const hr = document.getElementById('hr');
+            const mn = document.getElementById('mn');
+            const sc = document.getElementById('sc');
+
+            // কাঁটাগুলো দ্রুত ৩ সেকেন্ড ঘুরে ১২টায় থামবে
+            setTimeout(() => {
+                hr.style.transform = `translateX(-50%) rotate(720deg)`;
+                mn.style.transform = `translateX(-50%) rotate(1440deg)`;
+                sc.style.transform = `translateX(-50%) rotate(2160deg)`;
+            }, 100);
+
+            // ৪. ৪ সেকেন্ড পর চিঠি দেখানো
+            setTimeout(() => {
+                clockSec.style.display = 'none';
+                const wishSec = document.getElementById('wish-section');
+                wishSec.style.display = 'block';
+                document.body.style.overflowY = 'auto'; // স্ক্রল এনাবল
+                document.body.style.alignItems = 'flex-start'; // লেআউট ঠিক করা
+            }, 4000);
+        });
+    </script>
+</body>
+</html>
