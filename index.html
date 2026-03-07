@@ -15,7 +15,7 @@
             align-items: center;
             font-family: 'Hind Siliguri', sans-serif;
             color: white;
-            overflow-x: hidden;
+            overflow: hidden;
         }
 
         /* গিফট বক্স স্ক্রিন */
@@ -23,8 +23,12 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             cursor: pointer;
-            z-index: 100;
+            width: 100%;
+            height: 100vh;
+            position: absolute;
+            z-index: 999;
         }
 
         .gift-icon {
@@ -42,6 +46,8 @@
         #clock-section {
             display: none;
             text-align: center;
+            opacity: 0;
+            transition: opacity 1s;
         }
 
         .clock {
@@ -50,14 +56,14 @@
             border-radius: 50%;
             position: relative;
             box-shadow: 0 0 40px rgba(0, 212, 255, 0.4);
-            margin-bottom: 20px;
+            margin: 20px auto;
         }
 
         .hand {
             position: absolute; bottom: 50%; left: 50%;
             transform-origin: bottom center;
             border-radius: 10px;
-            transform: translateX(-50%);
+            transform: translateX(-50%) rotate(0deg);
             transition: transform 3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -71,7 +77,8 @@
             width: 95%;
             max-width: 600px;
             padding: 20px;
-            margin: 40px 0;
+            margin-top: 50px;
+            margin-bottom: 50px;
         }
 
         .letter-card {
@@ -83,12 +90,6 @@
             font-size: 1.15rem;
             text-align: center;
             box-shadow: 0 0 50px rgba(255, 0, 124, 0.2);
-            animation: fadeIn 2s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .highlight { color: #ff007c; font-weight: bold; font-size: 1.6rem; display: block; margin: 15px 0; }
@@ -102,13 +103,13 @@
 </head>
 <body>
 
-    <div id="start-screen" onclick="handleStart()">
+    <div id="start-screen">
         <div class="gift-icon">🎁</div>
-        <p style="margin-top: 10px; color: #444;">Tap to Open</p>
+        <p style="margin-top: 15px; color: #555; letter-spacing: 2px;">TAP TO OPEN SURPRISE</p>
     </div>
 
     <div id="clock-section">
-        <h2 style="color: #00d4ff; margin-bottom: 20px; letter-spacing: 3px;">TIME TRAVELING...</h2>
+        <h2 style="color: #00d4ff; margin-bottom: 20px; letter-spacing: 3px;">TIME IS CHANGING...</h2>
         <div class="clock">
             <div id="hr" class="hand hour"></div>
             <div id="mn" class="hand min"></div>
@@ -127,40 +128,4 @@
             নিজের স্বপ্নটাকে সত্যি করে, আমাকে দেখানো স্বপ্নগুলোও যেনো সত্যি করতে পারিস,,,,,বেশি বেশি দোয়া রইলো✨🤲।।।<br><br>
             <span class="highlight" style="color:#00d4ff;">*শুভ জন্মদিন*🕊️💥</span>
             <span class="bikas">তোমার বিকাশ নাম্বার দাও ❤️‍🩹❤️‍🩹</span>
-        </div>
-    </div>
-
-    <div class="dev">DEVELOPER: YoUR_Nafu</div>
-
-    <script>
-        function handleStart() {
-            // ১. গিফট স্ক্রিন সরাও
-            document.getElementById('start-screen').style.display = 'none';
             
-            // ২. ঘড়ি দেখাও
-            const clockSec = document.getElementById('clock-section');
-            clockSec.style.display = 'block';
-
-            // ৩. কাঁটা ঘোরানো শুরু
-            const hr = document.getElementById('hr');
-            const mn = document.getElementById('mn');
-            const sc = document.getElementById('sc');
-
-            // ৩ সেকেন্ডে কয়েকবার ঘুরে ১২টায় থামবে
-            setTimeout(() => {
-                hr.style.transform = `translateX(-50%) rotate(720deg)`;
-                mn.style.transform = `translateX(-50%) rotate(1440deg)`;
-                sc.style.transform = `translateX(-50%) rotate(2160deg)`;
-            }, 100);
-
-            // ৪. ৪ সেকেন্ড পর চিঠি দেখাও
-            setTimeout(() => {
-                clockSec.style.display = 'none';
-                document.getElementById('wish-section').style.display = 'block';
-                document.body.style.overflowY = 'auto'; // স্ক্রল চালু
-                document.body.style.alignItems = 'flex-start'; // উপর থেকে লেখা শুরু হবে
-            }, 4000);
-        }
-    </script>
-</body>
-</html>
