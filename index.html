@@ -16,40 +16,36 @@
             font-family: 'Hind Siliguri', sans-serif;
             color: white;
             overflow: hidden;
-            user-select: none;
         }
 
         /* গিফট বক্স স্ক্রিন */
         #start-screen {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            width: 100%;
-            height: 100vh;
-            position: absolute;
-            z-index: 999;
             background: #000;
+            z-index: 1000;
+            cursor: pointer;
         }
 
         .gift-icon {
-            font-size: 110px;
-            animation: giftBounce 1.5s infinite ease-in-out;
-            filter: drop-shadow(0 0 20px #ff007c);
+            font-size: 100px;
+            animation: giftBounce 1.5s infinite;
         }
 
         @keyframes giftBounce {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-25px) scale(1.1); }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
         }
 
         /* ঘড়ি সেকশন */
         #clock-section {
             display: none;
             text-align: center;
-            opacity: 0;
-            transition: opacity 1s;
         }
 
         .clock {
@@ -57,66 +53,57 @@
             border: 10px solid #00d4ff;
             border-radius: 50%;
             position: relative;
-            box-shadow: 0 0 40px rgba(0, 212, 255, 0.4);
             margin: 20px auto;
+            box-shadow: 0 0 30px #00d4ff;
         }
 
         .hand {
             position: absolute; bottom: 50%; left: 50%;
             transform-origin: bottom center;
-            border-radius: 10px;
-            transform: translateX(-50%) rotate(0deg);
-            transition: transform 3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 5px;
+            transform: translateX(-50%);
         }
 
-        .hour { width: 8px; height: 65px; background: #fff; z-index: 3; }
-        .min { width: 5px; height: 95px; background: #00d4ff; z-index: 4; }
-        .sec { width: 2px; height: 115px; background: #ff007c; z-index: 5; }
+        .hour { width: 8px; height: 60px; background: #fff; }
+        .min { width: 5px; height: 90px; background: #00d4ff; }
+        .sec { width: 2px; height: 110px; background: #ff007c; }
 
         /* চিঠি সেকশন */
         #wish-section {
             display: none;
-            width: 95%;
+            width: 90%;
             max-width: 600px;
             padding: 20px;
-            margin-top: 40px;
-            margin-bottom: 40px;
+            margin: 50px 0;
         }
 
         .letter-card {
-            background: rgba(20, 20, 20, 0.95);
-            padding: 40px 25px;
-            border-radius: 25px;
+            background: rgba(25, 25, 25, 0.98);
+            padding: 30px;
+            border-radius: 20px;
             border: 1px solid #ff007c;
             line-height: 1.8;
-            font-size: 1.15rem;
             text-align: center;
-            box-shadow: 0 0 50px rgba(255, 0, 124, 0.2);
-            animation: fadeIn 2s ease;
+            box-shadow: 0 0 40px rgba(255, 0, 124, 0.3);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .highlight { color: #ff007c; font-weight: bold; font-size: 1.6rem; display: block; margin: 15px 0; }
+        .highlight { color: #ff007c; font-weight: bold; font-size: 1.5rem; display: block; margin: 15px 0; }
 
         .dev {
             position: fixed; bottom: 10px; width: 100%;
-            text-align: center; font-size: 0.7rem; color: #333; letter-spacing: 4px;
+            text-align: center; font-size: 0.7rem; color: #333; letter-spacing: 3px;
         }
     </style>
 </head>
-<body>
+<body onclick="startMagic()">
 
     <div id="start-screen">
         <div class="gift-icon">🎁</div>
-        <p style="margin-top: 15px; color: #555; letter-spacing: 2px; font-size: 0.9rem;">TAP TO OPEN</p>
+        <p style="margin-top:20px; color:#666;">ট্যাপ করো জয়...</p>
     </div>
 
     <div id="clock-section">
-        <h2 style="color: #00d4ff; margin-bottom: 20px; letter-spacing: 3px; font-weight: 300;">TIME TRAVELING...</h2>
+        <h2 style="color:#00d4ff; letter-spacing:3px;">TIME TRAVELING...</h2>
         <div class="clock">
             <div id="hr" class="hand hour"></div>
             <div id="mn" class="hand min"></div>
@@ -140,39 +127,19 @@
     <div class="dev">DEVELOPER: YoUR_Nafu</div>
 
     <script>
-        const startScreen = document.getElementById('start-screen');
-        
-        // স্ক্রিনের যেকোনো জায়গায় ক্লিক করলে কাজ করবে
-        startScreen.addEventListener('click', function() {
-            // ১. গিফট সরাও
-            this.style.display = 'none';
-            
-            // ২. ঘড়ি দেখাও
-            const clockSec = document.getElementById('clock-section');
-            clockSec.style.display = 'block';
-            setTimeout(() => { clockSec.style.opacity = '1'; }, 50);
+        var magicStarted = false;
 
-            // ৩. কাঁটা ঘোরানো
-            const hr = document.getElementById('hr');
-            const mn = document.getElementById('mn');
-            const sc = document.getElementById('sc');
+        function startMagic() {
+            if (magicStarted) return; // একবার শুরু হলে আর কাজ করবে না
+            magicStarted = true;
 
-            // কাঁটাগুলো দ্রুত ৩ সেকেন্ড ঘুরে ১২টায় থামবে
-            setTimeout(() => {
-                hr.style.transform = `translateX(-50%) rotate(720deg)`;
-                mn.style.transform = `translateX(-50%) rotate(1440deg)`;
-                sc.style.transform = `translateX(-50%) rotate(2160deg)`;
-            }, 100);
+            // ১. গিফট স্ক্রিন গায়েব
+            document.getElementById('start-screen').style.display = 'none';
 
-            // ৪. ৪ সেকেন্ড পর চিঠি দেখানো
-            setTimeout(() => {
-                clockSec.style.display = 'none';
-                const wishSec = document.getElementById('wish-section');
-                wishSec.style.display = 'block';
-                document.body.style.overflowY = 'auto'; // স্ক্রল এনাবল
-                document.body.style.alignItems = 'flex-start'; // লেআউট ঠিক করা
-            }, 4000);
-        });
-    </script>
-</body>
-</html>
+            // ২. ঘড়ি দেখানো
+            document.getElementById('clock-section').style.display = 'block';
+
+            // ৩. কাঁটা ঘোরানো (সিএসএস ট্রানজিশন ছাড়াই সরাসরি সেট করছি)
+            var hr = document.getElementById('hr');
+            var mn = document.getElementById('
+                                             
