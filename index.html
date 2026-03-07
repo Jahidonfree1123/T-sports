@@ -9,25 +9,25 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background: #050505;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
             font-family: 'Hind Siliguri', sans-serif;
             color: white;
+            overflow-x: hidden;
+        }
+
+        /* ১. শুরুর স্ক্রিন - শুধু গিফট বক্স */
+        #start-screen {
+            cursor: pointer;
             text-align: center;
         }
 
-        /* শুরুর বাটন/গিফট */
-        #start-screen {
-            cursor: pointer;
-            transition: 0.5s;
-        }
-
         .main-gift {
-            font-size: 80px;
+            font-size: 100px;
             animation: pulse 1.5s infinite;
+            display: block;
         }
 
         @keyframes pulse {
@@ -36,78 +36,79 @@
             100% { transform: scale(1); filter: drop-shadow(0 0 10px #ff007c); }
         }
 
-        /* ঘড়ি ডিজাইন */
+        /* ২. ঘড়ি সেকশন */
         #clock-container {
             display: none;
             opacity: 0;
-            transition: 1s;
+            text-align: center;
         }
 
         .clock {
-            width: 300px; height: 300px;
+            width: 280px; height: 280px;
             border: 8px solid #00d4ff;
             border-radius: 50%;
             position: relative;
             box-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
-            background: rgba(255, 255, 255, 0.05);
+            margin: 0 auto;
         }
 
         .hand {
             position: absolute; bottom: 50%; left: 50%;
             transform-origin: bottom center;
             border-radius: 10px;
+            transform: translateX(-50%) rotate(0deg);
             transition: transform 3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .hour { width: 8px; height: 70px; background: #fff; z-index: 3; }
-        .min { width: 5px; height: 100px; background: #00d4ff; z-index: 4; }
-        .sec { width: 2px; height: 120px; background: #ff007c; z-index: 5; }
+        .hour { width: 8px; height: 60px; background: #fff; z-index: 3; }
+        .min { width: 5px; height: 90px; background: #00d4ff; z-index: 4; }
+        .sec { width: 2px; height: 110px; background: #ff007c; z-index: 5; }
 
-        /* চিঠি সেকশন */
+        /* ৩. আপনার পুরো লেখাটি */
         #birthday-section {
             display: none;
-            width: 90%;
-            max-width: 550px;
+            width: 95%;
+            max-width: 600px;
             padding: 20px;
+            margin: 20px auto;
         }
 
-        .letter {
+        .letter-card {
             line-height: 1.8;
-            font-size: 1.15rem;
-            color: #e0e0e0;
-            background: rgba(255, 255, 255, 0.08);
-            padding: 25px;
-            border-radius: 20px;
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-            animation: fadeIn 2s ease-in;
+            font-size: 1.1rem;
+            color: #f0f0f0;
+            background: rgba(255, 255, 255, 0.07);
+            padding: 30px;
+            border-radius: 25px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            text-align: center;
+            animation: slideIn 1.5s ease-out;
         }
 
-        .highlight { color: #ff007c; font-weight: bold; font-size: 1.4rem; display: block; margin: 10px 0; }
-        .bikas { color: #00d4ff; font-weight: bold; font-size: 1.3rem; margin-top: 20px; display: block; }
+        .highlight { color: #ff007c; font-weight: bold; font-size: 1.5rem; display: block; margin: 15px 0; }
+        .bikas { color: #00d4ff; font-weight: bold; font-size: 1.3rem; margin-top: 25px; display: block; border-top: 1px dashed #444; padding-top: 15px; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(50px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .developer {
-            position: fixed; bottom: 15px;
-            font-size: 0.7rem; color: #444;
-            letter-spacing: 4px;
+            position: fixed; bottom: 10px;
+            font-size: 0.7rem; color: #333;
+            letter-spacing: 3px; width: 100%; text-align: center;
         }
     </style>
 </head>
 <body>
 
     <div id="start-screen" onclick="startSurprise()">
-        <div class="main-gift">🎁</div>
-        <h2 style="margin-top: 20px; font-weight: 300; letter-spacing: 2px;">Joy, আপনার জন্য একটি সারপ্রাইজ!</h2>
-        <p style="color: #888;">(উপরে ক্লিক করুন)</p>
+        <span class="main-gift">🎁</span>
     </div>
 
     <div id="clock-container">
-        <h3 style="margin-bottom: 20px; color: #00d4ff;">সময়টা আপনার জন্য থমকে যাক...</h3>
+        <h3 style="margin-bottom: 25px; color: #00d4ff; letter-spacing: 2px;">অপেক্ষা শেষ...</h3>
         <div class="clock">
             <div id="hr" class="hand hour"></div>
             <div id="mn" class="hand min"></div>
@@ -116,7 +117,7 @@
     </div>
 
     <div id="birthday-section">
-        <div class="letter">
+        <div class="letter-card">
             জনাব,,<br>
             হয়তো আপনি এখন ঘুমের রাজ্যে🥹🙁,,কিন্তু একটু পরও ঘুমালে পারতেন,যাকগে অনেক ক্লান্ত এখন ঘুমান,,,,<br>
             <span class="highlight">--- আজ আপনার জন্মদিন ---</span>
@@ -133,7 +134,7 @@
 
     <script>
         function startSurprise() {
-            // ১. স্টার্ট স্ক্রিন লুকানো
+            // ১. গিফট স্ক্রিন হাইড
             document.getElementById('start-screen').style.display = 'none';
             
             // ২. ঘড়ি দেখানো
@@ -141,26 +142,8 @@
             clockBox.style.display = 'block';
             setTimeout(() => { clockBox.style.opacity = '1'; }, 100);
 
-            // ৩. ঘড়ির কাঁটা দ্রুত ঘুরিয়ে ১২টায় নিয়ে আসা
+            // ৩. ঘড়ির কাঁটা ঘোরানো (অ্যানিমেশন)
             const hr = document.getElementById('hr');
             const mn = document.getElementById('mn');
-            const sc = document.getElementById('sc');
-
-            // কাঁটাগুলোকে ১২টার পজিশনে (৩৬০ ডিগ্রি) পাঠানো
-            hr.style.transform = `translateX(-50%) rotateZ(360deg)`;
-            mn.style.transform = `translateX(-50%) rotateZ(360deg)`;
-            sc.style.transform = `translateX(-50%) rotateZ(360deg)`;
-
-            // ৪. ৩ সেকেন্ড পর ঘড়ি সরিয়ে চিঠি দেখানো
-            setTimeout(() => {
-                clockBox.style.opacity = '0';
-                setTimeout(() => {
-                    clockBox.style.display = 'none';
-                    document.getElementById('birthday-section').style.display = 'block';
-                    document.body.style.background = "radial-gradient(circle, #1a0011, #050505)";
-                }, 1000);
-            }, 3500);
-        }
-    </script>
-</body>
-</html>
+            const sc
+            
