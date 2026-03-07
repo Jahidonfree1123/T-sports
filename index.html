@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surprise for Joy</title>
+    <title>Birthday Surprise for Joy</title>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -15,131 +15,177 @@
             align-items: center;
             font-family: 'Hind Siliguri', sans-serif;
             color: white;
-            overflow: hidden;
-        }
-
-        /* গিফট বক্স স্ক্রিন */
-        #start-screen {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: #000;
-            z-index: 1000;
-            cursor: pointer;
-        }
-
-        .gift-icon {
-            font-size: 100px;
-            animation: giftBounce 1.5s infinite;
-        }
-
-        @keyframes giftBounce {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
+            overflow-x: hidden;
         }
 
         /* ঘড়ি সেকশন */
-        #clock-section {
-            display: none;
-            text-align: center;
-        }
-
+        #clock-section { text-align: center; }
         .clock {
             width: 280px; height: 280px;
-            border: 10px solid #00d4ff;
-            border-radius: 50%;
-            position: relative;
-            margin: 20px auto;
-            box-shadow: 0 0 30px #00d4ff;
+            border: 8px solid #00d4ff; border-radius: 50%;
+            position: relative; margin: 0 auto;
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.4);
+            background: #050505;
         }
-
-        .hand {
-            position: absolute; bottom: 50%; left: 50%;
-            transform-origin: bottom center;
-            border-radius: 5px;
-            transform: translateX(-50%);
+        .number {
+            position: absolute; width: 100%; height: 100%;
+            text-align: center; font-weight: bold; font-size: 1.2rem;
+            color: #00d4ff; padding: 10px;
         }
+        .n1 { transform: rotate(30deg); } .n1 span { display: block; transform: rotate(-30deg); }
+        .n2 { transform: rotate(60deg); } .n2 span { display: block; transform: rotate(-60deg); }
+        .n3 { transform: rotate(90deg); } .n3 span { display: block; transform: rotate(-90deg); }
+        .n4 { transform: rotate(120deg); } .n4 span { display: block; transform: rotate(-120deg); }
+        .n5 { transform: rotate(150deg); } .n5 span { display: block; transform: rotate(-150deg); }
+        .n6 { transform: rotate(180deg); } .n6 span { display: block; transform: rotate(-180deg); }
+        .n7 { transform: rotate(210deg); } .n7 span { display: block; transform: rotate(-210deg); }
+        .n8 { transform: rotate(240deg); } .n8 span { display: block; transform: rotate(-240deg); }
+        .n9 { transform: rotate(270deg); } .n9 span { display: block; transform: rotate(-270deg); }
+        .n10 { transform: rotate(300deg); } .n10 span { display: block; transform: rotate(-300deg); }
+        .n11 { transform: rotate(330deg); } .n11 span { display: block; transform: rotate(-330deg); }
+        .n12 { transform: rotate(0deg); } .n12 span { display: block; transform: rotate(0deg); }
 
-        .hour { width: 8px; height: 60px; background: #fff; }
-        .min { width: 5px; height: 90px; background: #00d4ff; }
-        .sec { width: 2px; height: 110px; background: #ff007c; }
+        .hand { position: absolute; bottom: 50%; left: 50%; transform-origin: bottom center; border-radius: 10px; transform: translateX(-50%); transition: transform 4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .hour { width: 7px; height: 65px; background: #fff; z-index: 3; }
+        .min { width: 4px; height: 95px; background: #00d4ff; z-index: 4; }
+        .sec { width: 2px; height: 120px; background: #ff007c; z-index: 5; }
+        #timer-display { font-size: 2.5rem; color: #ff007c; font-weight: bold; margin-top: 30px; letter-spacing: 4px; }
+
+        /* কেক সেকশন */
+        #cake-section { display: none; text-align: center; }
+        .cake-wrap { position: relative; width: 250px; height: 200px; margin: 0 auto; }
+        .cake { font-size: 120px; }
+        .knife { font-size: 60px; position: absolute; top: -20px; right: -20px; transform: rotate(-45deg); transition: 0.5s ease-in; }
+        .knife-cut { transform: translate(-100px, 100px) rotate(0deg) !important; }
+
+        /* গিফট বক্স (কোনো লেখা নেই) */
+        #gift-section { display: none; text-align: center; cursor: pointer; }
+        .gift-box { font-size: 110px; animation: giftJump 0.8s infinite ease-in-out; }
+        @keyframes giftJump { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15) rotate(5deg); } }
 
         /* চিঠি সেকশন */
-        #wish-section {
-            display: none;
-            width: 90%;
-            max-width: 600px;
-            padding: 20px;
-            margin: 50px 0;
-        }
-
+        #wish-section { display: none; width: 92%; max-width: 480px; padding: 10px; margin: 15px auto; }
         .letter-card {
-            background: rgba(25, 25, 25, 0.98);
-            padding: 30px;
-            border-radius: 20px;
-            border: 1px solid #ff007c;
-            line-height: 1.8;
-            text-align: center;
-            box-shadow: 0 0 40px rgba(255, 0, 124, 0.3);
+            background: rgba(15, 15, 15, 0.98); padding: 25px 18px;
+            border-radius: 20px; border: 1.5px solid #ff007c;
+            line-height: 1.6; font-size: 1rem; text-align: center;
+            box-shadow: 0 0 30px rgba(255, 0, 124, 0.2);
+            word-wrap: break-word;
         }
+        .highlight { color: #ff007c; font-weight: bold; font-size: 1.2rem; display: block; margin: 8px 0; }
+        .blue-text { color: #00d4ff; font-weight: bold; font-size: 1.1rem; }
 
-        .highlight { color: #ff007c; font-weight: bold; font-size: 1.5rem; display: block; margin: 15px 0; }
-
-        .dev {
-            position: fixed; bottom: 10px; width: 100%;
-            text-align: center; font-size: 0.7rem; color: #333; letter-spacing: 3px;
-        }
+        .dev { position: fixed; bottom: 8px; font-size: 9px; color: #222; width: 100%; text-align: center; }
     </style>
 </head>
-<body onclick="startMagic()">
-
-    <div id="start-screen">
-        <div class="gift-icon">🎁</div>
-        <p style="margin-top:20px; color:#666;">ট্যাপ করো জয়...</p>
-    </div>
+<body>
 
     <div id="clock-section">
-        <h2 style="color:#00d4ff; letter-spacing:3px;">TIME TRAVELING...</h2>
         <div class="clock">
-            <div id="hr" class="hand hour"></div>
-            <div id="mn" class="hand min"></div>
-            <div id="sc" class="hand sec"></div>
+            <div class="number n1"><span>1</span></div><div class="number n2"><span>2</span></div>
+            <div class="number n3"><span>3</span></div><div class="number n4"><span>4</span></div>
+            <div class="number n5"><span>5</span></div><div class="number n6"><span>6</span></div>
+            <div class="number n7"><span>7</span></div><div class="number n8"><span>8</span></div>
+            <div class="number n9"><span>9</span></div><div class="number n10"><span>10</span></div>
+            <div class="number n11"><span>11</span></div><div class="number n12"><span>12</span></div>
+            <div id="hr" class="hand hour" style="transform: translateX(-50%) rotate(359deg);"></div>
+            <div id="mn" class="hand min" style="transform: translateX(-50%) rotate(354deg);"></div>
+            <div id="sc" class="hand sec" style="transform: translateX(-50%) rotate(330deg);"></div>
         </div>
+        <div id="timer-display">11:59:55</div>
+    </div>
+
+    <div id="cake-section">
+        <div class="cake-wrap">
+            <div class="cake">🎂</div>
+            <div id="knife" class="knife">🔪</div>
+        </div>
+        <h1 style="color:#ff007c; margin-top: 20px;">HAPPY BIRTHDAY!</h1>
+    </div>
+
+    <div id="gift-section" onclick="openGift()">
+        <div class="gift-box">🎁</div>
     </div>
 
     <div id="wish-section">
         <div class="letter-card">
-            জনাব,,<br>
-            হয়তো আপনি এখন ঘুমের রাজ্যে🥹🙁,,কিন্তু একটু পরও ঘুমালে পারতেন,যাকগে অনেক ক্লান্ত এখন ঘুমান,,,,<br>
-            <span class="highlight">--- আজ আপনার জন্মদিন ---</span>
-            দেখতে দেখতে 445 দিন পাড় হয়ে গেলো,,, এই ভাবেই একদিন বাকিটা জীবন পাড় হয়ে যাবে,হয়তো তখন আমাদের পরিচয়টার আরো গভীরতা বাড়বে...<br><br>
-            একই সাথে কিশোর পেরিয়ে যৌবন,যৌবন পেরিয়ে বৃদ্ধতে পরিনত হবো... তবে ইনশাআল্লাহ, একই সাথে ইহকাল পাড় করে দিবো মহান আল্লাহ যদি আমাদের দোয়া না ফিরায়🥺🤲।।<br><br>
-            দোয়া রইলো,ভালো থাক,ভালো থাকবিও,,ইনশাআল্লাহ.... আমাকে সহ্য করার ধর্য্য আল্লাহ যেনো তোকে আরো বাড়িয়ে দেয়☺️🫠💝<br>
-            নিজের স্বপ্নটাকে সত্যি করে, আমাকে দেখানো স্বপ্নগুলোও যেনো সত্যি করতে পারিস,,,,,বেশি বেশি দোয়া রইলো✨🤲।।।<br><br>
-            <span class="highlight" style="color:#00d4ff;">*শুভ জন্মদিন*🕊️💥</span>
+            <div id="typewriter"></div>
         </div>
     </div>
 
     <div class="dev">DEVELOPER: YoUR_Nafu</div>
 
     <script>
-        var magicStarted = false;
+        window.onload = function() { startSurprise(); };
 
-        function startMagic() {
-            if (magicStarted) return; // একবার শুরু হলে আর কাজ করবে না
-            magicStarted = true;
+        function startSurprise() {
+            setTimeout(() => {
+                document.getElementById('hr').style.transform = "translateX(-50%) rotate(720deg)";
+                document.getElementById('mn').style.transform = "translateX(-50%) rotate(1080deg)";
+                document.getElementById('sc').style.transform = "translateX(-50%) rotate(1440deg)";
+            }, 100);
 
-            // ১. গিফট স্ক্রিন গায়েব
-            document.getElementById('start-screen').style.display = 'none';
+            let s = 55;
+            let t = setInterval(() => {
+                s++;
+                if (s <= 60) document.getElementById('timer-display').innerText = `11:59:${s < 10 ? '0'+s : s}`;
+                if (s >= 60) {
+                    clearInterval(t);
+                    document.getElementById('timer-display').innerText = `12:00:00`;
+                    setTimeout(() => {
+                        document.getElementById('clock-section').style.display = 'none';
+                        document.getElementById('cake-section').style.display = 'block';
+                        setTimeout(() => {
+                            document.getElementById('knife').classList.add('knife-cut');
+                            setTimeout(() => {
+                                document.getElementById('cake-section').style.display = 'none';
+                                document.getElementById('gift-section').style.display = 'block';
+                            }, 1300);
+                        }, 400);
+                    }, 1000);
+                }
+            }, 1000);
+        }
 
-            // ২. ঘড়ি দেখানো
-            document.getElementById('clock-section').style.display = 'block';
+        function openGift() {
+            document.getElementById('gift-section').style.display = 'none';
+            document.getElementById('wish-section').style.display = 'block';
+            document.body.style.alignItems = "flex-start";
+            document.body.style.overflowY = "auto";
+            startTyping();
+        }
 
-            // ৩. কাঁটা ঘোরানো (সিএসএস ট্রানজিশন ছাড়াই সরাসরি সেট করছি)
-            var hr = document.getElementById('hr');
-            var mn = document.getElementById('
-                                             
+        function startTyping() {
+            const msg = `জনাব,,
+হয়তো আপনি এখন ঘুমের রাজ্যে🥹🙁,,কিন্তু একটু পরও ঘুমালে পারতেন,যাকগে অনেক ক্লান্ত এখন ঘুমান,,,,
+<br><span class="highlight">--- আজ আপনার জন্মদিন ---</span><br>
+দেখতে দেখতে 445 দিন পাড় হয়ে গেলো,,, এই ভাবেই একদিন বাকিটা জীবন পাড় হয়ে যাবে,হয়তো তখন আমাদের পরিচয়টার আরো গভীরতা বাড়বে...
+একই সাথে কিশোর পেরিয়ে যৌবন,যৌবন পেরিয়ে বৃদ্ধতে পরিনত হবো...
+তবে ইনশাআল্লাহ, একই সাথে ইহকাল পাড় করে দিবো মহান আল্লাহ যদি আমাদের দোয়া না ফিরায়🥺🤲।।
+<br><br>
+দোয়া রইলো,ভালো থাক,ভালো থাকবিও,,ইনশাআল্লাহ.... আমাকে সহ্য করার ধর্য্য আল্লাহ যেনো তোকে আরো বাড়িয়ে দেয়☺️🫠💝
+নিজের স্বপ্নটাকে সত্যি করে, আমাকে দেখানো স্বপ্নগুলোও যেনো সত্যি করতে পারিস,,,,,বেশি বেশি দোয়া রইলো✨🤲।।।
+<br><br>
+<span class="blue-text">*শুভ জন্মদিন জয়*🕊️💥</span>`;
+
+            let i = 0;
+            let target = document.getElementById('typewriter');
+            function type() {
+                if (i < msg.length) {
+                    if (msg.charAt(i) === '<') {
+                        let end = msg.indexOf('>', i);
+                        target.innerHTML += msg.substring(i, end + 1);
+                        i = end + 1;
+                    } else {
+                        target.innerHTML += msg.charAt(i);
+                        i++;
+                    }
+                    setTimeout(type, 25); // স্পিড বাড়িয়ে ২৫ মিলিসেকেন্ড করে দেওয়া হয়েছে
+                    window.scrollTo(0, document.body.scrollHeight);
+                }
+            }
+            type();
+        }
+    </script>
+</body>
+</html>
